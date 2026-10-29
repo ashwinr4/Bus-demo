@@ -20,8 +20,10 @@ export type AlertType =
   | 'delay_warning';
 
 export interface GeoPoint {
-  x: number; // 0 to 100 percentage in our coordinate grid
-  y: number; // 0 to 100 percentage in our coordinate grid
+  x: number; // 0 to 100 percentage in coordinate grid
+  y: number; // 0 to 100 percentage in coordinate grid
+  lat?: number; // Real geographic latitude
+  lng?: number; // Real geographic longitude
   label?: string;
 }
 
@@ -130,4 +132,3 @@ export interface OperationalAlert {
 export type Role = 'admin' | 'driver' | 'parent';
 
 export type DriverTripState = 'pre_trip' | 'active_trip' | 'completed_trip';
-

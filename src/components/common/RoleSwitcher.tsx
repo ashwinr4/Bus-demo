@@ -12,14 +12,17 @@ export const RoleSwitcher: React.FC = () => {
   const isParent = location.pathname.startsWith('/parent');
 
   return (
-    <aside aria-label="Prototype Role Switcher" className="bg-white border-b border-slate-200 text-xs text-slate-600 py-2 px-4 flex flex-wrap items-center justify-between gap-3 sticky top-0 z-50 shadow-xs">
+    <aside
+      aria-label="Prototype Role Switcher"
+      className="bg-[#F3F6F8] border-b border-slate-200 text-xs text-[#17324D] py-2 px-4 flex flex-wrap items-center justify-between gap-3 sticky top-0 z-50 shadow-xs"
+    >
       <div className="flex items-center gap-2.5">
-        <span className="flex items-center gap-1.5 font-semibold text-slate-800 text-xs tracking-wide">
-          <Layers className="w-3.5 h-3.5 text-teal-700" />
+        <span className="flex items-center gap-1.5 font-semibold text-[#17324D] text-xs tracking-wide">
+          <Layers className="w-3.5 h-3.5 text-[#0F766E]" />
           <span>Demo Role Switcher</span>
         </span>
         <span className="text-slate-300 hidden sm:inline">•</span>
-        <span className="text-slate-500 hidden md:inline text-xs">
+        <span className="text-[#17324D]/80 hidden md:inline text-xs">
           Oakridge South Campus
         </span>
       </div>
@@ -29,8 +32,8 @@ export const RoleSwitcher: React.FC = () => {
           onClick={() => navigate('/admin')}
           className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium transition-colors border ${
             isAdmin
-              ? 'bg-teal-700 text-white border-teal-700 shadow-xs'
-              : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-50'
+              ? 'bg-[#0F766E] text-white border-[#0F766E] shadow-xs'
+              : 'bg-white text-[#17324D] border-slate-200 hover:bg-slate-100'
           }`}
           title="Admin Panel (Desktop-first)"
         >
@@ -42,8 +45,8 @@ export const RoleSwitcher: React.FC = () => {
           onClick={() => navigate('/driver')}
           className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium transition-colors border ${
             isDriver
-              ? 'bg-teal-700 text-white border-teal-700 shadow-xs'
-              : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-50'
+              ? 'bg-[#0F766E] text-white border-[#0F766E] shadow-xs'
+              : 'bg-white text-[#17324D] border-slate-200 hover:bg-slate-100'
           }`}
           title="Driver Panel (Mobile-first)"
         >
@@ -55,8 +58,8 @@ export const RoleSwitcher: React.FC = () => {
           onClick={() => navigate('/parent')}
           className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium transition-colors border ${
             isParent
-              ? 'bg-teal-700 text-white border-teal-700 shadow-xs'
-              : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-50'
+              ? 'bg-[#0F766E] text-white border-[#0F766E] shadow-xs'
+              : 'bg-white text-[#17324D] border-slate-200 hover:bg-slate-100'
           }`}
           title="Parent Panel (Mobile-first)"
         >
@@ -67,7 +70,7 @@ export const RoleSwitcher: React.FC = () => {
         {!isRoleSelector && (
           <button
             onClick={() => navigate('/')}
-            className="ml-2 text-slate-500 hover:text-slate-800 text-xs flex items-center gap-0.5 transition-colors"
+            className="ml-2 text-[#17324D]/80 hover:text-[#17324D] text-xs flex items-center gap-0.5 transition-colors font-medium"
           >
             All Roles <ChevronRight className="w-3 h-3" />
           </button>

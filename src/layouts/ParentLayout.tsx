@@ -18,26 +18,26 @@ export const ParentLayout: React.FC = () => {
         <RoleSwitcher />
       </div>
 
-      {/* Reassuring Mobile Phone Shell (Strict White Theme) */}
+      {/* Reassuring Mobile Phone Shell */}
       <div className="w-full max-w-md bg-white min-h-[calc(100vh-41px)] flex flex-col shadow-sm border-x border-slate-200">
-        {/* Parent Header Bar (Strict White Theme) */}
-        <header className="bg-white text-slate-900 p-3.5 sticky top-[41px] z-30 flex items-center justify-between border-b border-slate-200">
+        {/* Parent Top Navigation Bar (Color Treatment: Light Cool Grey #F3F6F8 & Dark Navy #17324D) */}
+        <header className="bg-[#F3F6F8] text-[#17324D] p-3.5 sticky top-[41px] z-30 flex items-center justify-between border-b border-slate-200">
           <div>
-            <div className="flex items-center gap-1.5 text-xs text-teal-700 font-semibold uppercase tracking-wide">
-              <HeartHandshake className="w-4 h-4 text-teal-700" />
+            <div className="flex items-center gap-1.5 text-xs text-[#0F766E] font-semibold uppercase tracking-wide">
+              <HeartHandshake className="w-4 h-4 text-[#0F766E]" />
               <span>Parent SafeTransit</span>
             </div>
-            <h1 className="text-base font-bold text-slate-900 tracking-tight leading-tight mt-0.5">
+            <h1 className="text-base font-bold text-[#17324D] tracking-tight leading-tight mt-0.5">
               {parentStudent.name}
             </h1>
-            <p className="text-xs text-slate-500">
+            <p className="text-xs text-[#17324D]/70">
               {parentStudent.grade} • Roll {parentStudent.rollNumber}
             </p>
           </div>
 
           <div className="text-right">
-            <span className="text-[10px] text-slate-400 block uppercase tracking-wider">Assigned Bus</span>
-            <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded bg-teal-50 text-teal-800 text-xs font-bold border border-teal-200">
+            <span className="text-[10px] text-[#17324D]/60 block uppercase tracking-wider">Assigned Bus</span>
+            <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded bg-white text-[#0F766E] text-xs font-bold border border-slate-200 shadow-2xs">
               {parentAssignedBus.fleetNumber}
             </span>
           </div>
@@ -48,20 +48,20 @@ export const ParentLayout: React.FC = () => {
           <Outlet />
         </main>
 
-        {/* Bottom Reassuring Mobile Tab Navigation */}
-        <nav className="fixed bottom-0 left-0 right-0 max-w-md mx-auto bg-white border-t border-slate-200 py-1.5 px-3 flex items-center justify-around z-40 shadow-md">
+        {/* Bottom Mobile Tab Navigation (Color Treatment: Light Cool Grey #F3F6F8 & Dark Navy #17324D, Active: Teal #0F766E) */}
+        <nav className="fixed bottom-0 left-0 right-0 max-w-md mx-auto bg-[#F3F6F8] border-t border-slate-200 py-1.5 px-3 flex items-center justify-around z-40 shadow-md">
           <NavLink
             to="/parent"
             end
             className={({ isActive }) =>
               `flex flex-col items-center justify-center py-1.5 px-2 rounded-lg text-xs font-medium transition-colors flex-1 ${
                 isActive
-                  ? 'text-teal-800 font-bold bg-teal-50'
-                  : 'text-slate-500 hover:text-slate-900'
+                  ? 'text-[#0F766E] font-bold bg-white shadow-2xs border border-slate-200/80'
+                  : 'text-[#17324D]/70 hover:text-[#17324D]'
               }`
             }
           >
-            <MapPin className="w-5 h-5 mb-1 text-teal-700" />
+            <MapPin className="w-5 h-5 mb-1 text-[#0F766E]" />
             <span>Live Bus</span>
           </NavLink>
 
@@ -70,8 +70,8 @@ export const ParentLayout: React.FC = () => {
             className={({ isActive }) =>
               `flex flex-col items-center justify-center py-1.5 px-2 rounded-lg text-xs font-medium transition-colors flex-1 ${
                 isActive
-                  ? 'text-teal-800 font-bold bg-teal-50'
-                  : 'text-slate-500 hover:text-slate-900'
+                  ? 'text-[#0F766E] font-bold bg-white shadow-2xs border border-slate-200/80'
+                  : 'text-[#17324D]/70 hover:text-[#17324D]'
               }`
             }
           >
@@ -84,15 +84,15 @@ export const ParentLayout: React.FC = () => {
             className={({ isActive }) =>
               `flex flex-col items-center justify-center py-1.5 px-2 rounded-lg text-xs font-medium transition-colors flex-1 relative ${
                 isActive
-                  ? 'text-teal-800 font-bold bg-teal-50'
-                  : 'text-slate-500 hover:text-slate-900'
+                  ? 'text-[#0F766E] font-bold bg-white shadow-2xs border border-slate-200/80'
+                  : 'text-[#17324D]/70 hover:text-[#17324D]'
               }`
             }
           >
             <div className="relative">
               <Bell className="w-5 h-5 mb-1" />
               {childAlerts.length > 0 && (
-                <span className="absolute -top-1 -right-1 w-2 h-2 rounded-full bg-teal-600 ring-2 ring-white" />
+                <span className="absolute -top-1 -right-1 w-2 h-2 rounded-full bg-[#0F766E] ring-2 ring-white" />
               )}
             </div>
             <span>Alerts</span>
@@ -103,8 +103,8 @@ export const ParentLayout: React.FC = () => {
             className={({ isActive }) =>
               `flex flex-col items-center justify-center py-1.5 px-2 rounded-lg text-xs font-medium transition-colors flex-1 ${
                 isActive
-                  ? 'text-teal-800 font-bold bg-teal-50'
-                  : 'text-slate-500 hover:text-slate-900'
+                  ? 'text-[#0F766E] font-bold bg-white shadow-2xs border border-slate-200/80'
+                  : 'text-[#17324D]/70 hover:text-[#17324D]'
               }`
             }
           >

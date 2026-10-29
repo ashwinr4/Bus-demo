@@ -15,24 +15,24 @@ export const DriverLayout: React.FC = () => {
         <RoleSwitcher />
       </div>
 
-      {/* Mobile Shell Frame (Strict White Theme) */}
+      {/* Mobile Shell Frame */}
       <div className="w-full max-w-md bg-white min-h-[calc(100vh-41px)] flex flex-col shadow-sm border-x border-slate-200">
-        {/* High-Contrast Mobile Top Bar for Driver */}
-        <header className="bg-white border-b border-slate-200 p-3.5 sticky top-[41px] z-30 flex items-center justify-between">
+        {/* Mobile Top Bar (Color Treatment: Light Cool Grey #F3F6F8 & Dark Navy #17324D) */}
+        <header className="bg-[#F3F6F8] border-b border-slate-200 p-3.5 sticky top-[41px] z-30 flex items-center justify-between text-[#17324D]">
           <div className="flex items-center gap-2.5">
-            <div className="w-9 h-9 rounded-lg bg-teal-700 flex items-center justify-center text-white font-bold text-sm shadow-xs">
-              <Bus className="w-5 h-5" />
+            <div className="w-9 h-9 rounded-lg bg-[#0F766E] flex items-center justify-center text-white font-bold text-sm shadow-xs">
+              <Bus className="w-5 h-5 text-white" />
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <span className="text-base font-bold text-slate-900 tracking-tight">
+                <span className="text-base font-bold text-[#17324D] tracking-tight">
                   {assignedBus.fleetNumber}
                 </span>
-                <span className="text-xs px-2 py-0.5 rounded bg-slate-100 text-slate-700 font-mono font-medium border border-slate-200">
+                <span className="text-xs px-2 py-0.5 rounded bg-white text-[#17324D] font-mono font-medium border border-slate-200 shadow-2xs">
                   {assignedBus.registrationNumber}
                 </span>
               </div>
-              <p className="text-xs text-slate-500 font-medium">{currentDriver.name} • {currentDriver.employeeId}</p>
+              <p className="text-xs text-[#17324D]/80 font-medium">{currentDriver.name} • {currentDriver.employeeId}</p>
             </div>
           </div>
 
@@ -55,20 +55,20 @@ export const DriverLayout: React.FC = () => {
           <Outlet />
         </main>
 
-        {/* Bottom High-Touch Mobile Navigation Bar */}
-        <nav className="fixed bottom-0 left-0 right-0 max-w-md mx-auto bg-white border-t border-slate-200 py-1.5 px-3 flex items-center justify-around z-40 shadow-md">
+        {/* Bottom Mobile Navigation Bar (Color Treatment: Light Cool Grey #F3F6F8 & Dark Navy #17324D, Active: Teal #0F766E) */}
+        <nav className="fixed bottom-0 left-0 right-0 max-w-md mx-auto bg-[#F3F6F8] border-t border-slate-200 py-1.5 px-3 flex items-center justify-around z-40 shadow-md">
           <NavLink
             to="/driver"
             end
             className={({ isActive }) =>
               `flex flex-col items-center justify-center py-1.5 px-3 rounded-lg text-xs font-medium transition-colors flex-1 ${
                 isActive
-                  ? 'text-teal-800 bg-teal-50 font-semibold'
-                  : 'text-slate-500 hover:text-slate-900'
+                  ? 'text-[#0F766E] font-bold bg-white shadow-2xs border border-slate-200/80'
+                  : 'text-[#17324D]/70 hover:text-[#17324D]'
               }`
             }
           >
-            <Navigation className="w-5 h-5 mb-1 text-teal-700" />
+            <Navigation className="w-5 h-5 mb-1 text-[#0F766E]" />
             <span>Trip Console</span>
             {driverTripState === 'active_trip' && (
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 mt-0.5" />
@@ -80,8 +80,8 @@ export const DriverLayout: React.FC = () => {
             className={({ isActive }) =>
               `flex flex-col items-center justify-center py-1.5 px-3 rounded-lg text-xs font-medium transition-colors flex-1 ${
                 isActive
-                  ? 'text-teal-800 bg-teal-50 font-semibold'
-                  : 'text-slate-500 hover:text-slate-900'
+                  ? 'text-[#0F766E] font-bold bg-white shadow-2xs border border-slate-200/80'
+                  : 'text-[#17324D]/70 hover:text-[#17324D]'
               }`
             }
           >
@@ -94,8 +94,8 @@ export const DriverLayout: React.FC = () => {
             className={({ isActive }) =>
               `flex flex-col items-center justify-center py-1.5 px-3 rounded-lg text-xs font-medium transition-colors flex-1 ${
                 isActive
-                  ? 'text-teal-800 bg-teal-50 font-semibold'
-                  : 'text-slate-500 hover:text-slate-900'
+                  ? 'text-[#0F766E] font-bold bg-white shadow-2xs border border-slate-200/80'
+                  : 'text-[#17324D]/70 hover:text-[#17324D]'
               }`
             }
           >

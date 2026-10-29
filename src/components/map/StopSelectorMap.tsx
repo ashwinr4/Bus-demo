@@ -1,5 +1,7 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
+import L from 'leaflet';
 import { GeoPoint } from '../../types';
+import { toLatLng, fromLatLng } from '../../utils/geo';
 import { MapPin, CheckCircle2 } from 'lucide-react';
 
 interface StopSelectorMapProps {
@@ -15,138 +17,140 @@ export const StopSelectorMap: React.FC<StopSelectorMapProps> = ({
   selectedLocation,
   onMapClick,
 }) => {
-  const pinX = selectedLocation ? selectedLocation.coordinates.x * 10 : 500;
-  const pinY = selectedLocation ? selectedLocation.coordinates.y * 6 : 300;
+  const mapContainerRef = useRef<HTMLDivElement | null>(null);
+  const mapInstanceRef = useRef<L.Map | null>(null);
+  const markerLayerGroupRef = useRef<L.LayerGroup | null>(null);
 
-  const handleSvgClick = (e: React.MouseEvent<SVGSVGElement>) => {
-    if (!onMapClick) return;
-    const rect = e.currentTarget.getBoundingClientRect();
-    const clickX = ((e.clientX - rect.left) / rect.width) * 100;
-    const clickY = ((e.clientY - rect.top) / rect.height) * 100;
-    onMapClick({
-      x: Math.round(clickX),
-      y: Math.round(clickY),
-    });
-  };
+  // Initialize Leaflet Map
+  useEffect(() => {
+    if (!mapContainerRef.current) return;
+
+    if (!mapInstanceRef.current) {
+      const initialLatLng: [number, number] = selectedLocation
+        ? toLatLng(selectedLocation.coordinates)
+        : [12.925, 77.65];
+
+      const map = L.map(mapContainerRef.current, {
+        center: initialLatLng,
+        zoom: 14,
+        zoomControl: true,
+        attributionControl: true,
+      });
+
+      L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a>',
+      }).addTo(map);
+
+      markerLayerGroupRef.current = L.layerGroup().addTo(map);
+      mapInstanceRef.current = map;
+
+      // Handle map click to drop / move pin
+      map.on('click', (e: L.LeafletMouseEvent) => {
+        if (!onMapClick) return;
+        const newCoords = fromLatLng(e.latlng.lat, e.latlng.lng);
+        onMapClick(newCoords);
+      });
+
+      setTimeout(() => {
+        map.invalidateSize();
+      }, 150);
+    }
+
+    return () => {
+      if (mapInstanceRef.current) {
+        mapInstanceRef.current.remove();
+        mapInstanceRef.current = null;
+      }
+    };
+  }, []);
+
+  // Update Pin & Geofence on selectedLocation change
+  useEffect(() => {
+    const map = mapInstanceRef.current;
+    const layerGroup = markerLayerGroupRef.current;
+    if (!map || !layerGroup) return;
+
+    layerGroup.clearLayers();
+
+    if (selectedLocation) {
+      const latLng = toLatLng(selectedLocation.coordinates);
+
+      // Draw 300m Geofence Radius Circle
+      L.circle(latLng, {
+        radius: 300,
+        color: '#0f766e',
+        fillColor: '#99f6e4',
+        fillOpacity: 0.25,
+        weight: 1.5,
+        dashArray: '4, 4',
+      }).addTo(layerGroup);
+
+      // Dropped Pin DivIcon
+      const pinIcon = L.divIcon({
+        className: 'custom-selector-pin',
+        iconSize: [32, 42],
+        iconAnchor: [16, 42],
+        html: `
+          <div style="position:relative; width:32px; height:42px; display:flex; flex-direction:column; align-items:center;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="42" viewBox="0 0 24 32" fill="#0f766e" stroke="#ffffff" stroke-width="2">
+              <path d="M12 0C5.373 0 0 5.373 0 12c0 9 12 20 12 20s12-11 12-20c0-6.627-5.373-12-12-12zm0 17c-2.761 0-5-2.239-5-5s2.239-5 5-5 5 2.239 5 5-2.239 5-5 5z"/>
+            </svg>
+            <div style="
+              position:absolute;
+              top:-20px;
+              white-space:nowrap;
+              background:#ffffff;
+              color:#0f172a;
+              border:1px solid #0f766e;
+              border-radius:4px;
+              padding:1px 6px;
+              font-size:9.5px;
+              font-weight:700;
+              box-shadow:0 1px 4px rgba(0,0,0,0.2);
+              pointer-events:none;
+            ">
+              ${selectedLocation.name}
+            </div>
+          </div>
+        `,
+      });
+
+      L.marker(latLng, { icon: pinIcon }).addTo(layerGroup);
+      map.panTo(latLng);
+    }
+  }, [selectedLocation]);
 
   return (
-    <div className="relative w-full h-[320px] bg-slate-50 rounded-lg border border-slate-200 overflow-hidden select-none shadow-xs">
+    <div className="relative w-full h-[340px] bg-slate-100 rounded-lg border border-slate-200 overflow-hidden select-none shadow-xs">
       {/* Top Banner */}
-      <div className="absolute top-2.5 left-3 right-3 z-20 flex items-center justify-between pointer-events-none">
-        <span className="bg-white/95 text-slate-700 text-xs px-2.5 py-1 rounded border border-slate-200 pointer-events-auto flex items-center gap-1.5 font-medium shadow-xs">
+      <div className="absolute top-2.5 left-2.5 right-2.5 z-[500] flex items-center justify-between pointer-events-none">
+        <span className="bg-white/95 text-slate-800 text-xs px-2.5 py-1 rounded border border-slate-200 pointer-events-auto flex items-center gap-1.5 font-medium shadow-xs">
           <MapPin className="w-3.5 h-3.5 text-teal-700" />
-          Location & Pin Preview
+          Interactive Location Picker
         </span>
         {selectedLocation && (
-          <span className="bg-emerald-50 text-emerald-800 border border-emerald-200 text-xs px-2.5 py-1 rounded flex items-center gap-1 pointer-events-auto font-medium">
-            <CheckCircle2 className="w-3 h-3 text-emerald-600" /> Selected: {selectedLocation.coordinates.x}%, {selectedLocation.coordinates.y}%
+          <span className="bg-emerald-50 text-emerald-800 border border-emerald-200 text-xs px-2.5 py-1 rounded flex items-center gap-1 pointer-events-auto font-medium shadow-xs">
+            <CheckCircle2 className="w-3 h-3 text-emerald-600" /> Coords: {selectedLocation.coordinates.lat || selectedLocation.coordinates.x}°, {selectedLocation.coordinates.lng || selectedLocation.coordinates.y}°
           </span>
         )}
       </div>
 
-      <svg
-        viewBox="0 0 1000 600"
-        className="w-full h-full cursor-crosshair bg-[#f8fafc]"
-        onClick={handleSvgClick}
-        preserveAspectRatio="xMidYMid meet"
-      >
-        <defs>
-          <pattern id="lightSelectorGrid" width="50" height="50" patternUnits="userSpaceOnUse">
-            <rect width="50" height="50" fill="#f8fafc" />
-            <rect x="2" y="2" width="46" height="46" fill="#f1f5f9" rx="2" />
-          </pattern>
-        </defs>
-
-        <rect width="1000" height="600" fill="url(#lightSelectorGrid)" />
-
-        {/* Roads Foundation */}
-        <g stroke="#cbd5e1" strokeWidth="12" strokeLinecap="round" fill="none">
-          <path d="M 100,500 L 300,450 L 550,380 L 850,200" />
-          <path d="M 250,80 L 300,450 L 320,550" />
-          <path d="M 650,80 L 550,380 L 580,550" />
-          <path d="M 150,250 L 850,250" />
-        </g>
-        <g stroke="#ffffff" strokeWidth="8" strokeLinecap="round" fill="none">
-          <path d="M 100,500 L 300,450 L 550,380 L 850,200" />
-          <path d="M 250,80 L 300,450 L 320,550" />
-          <path d="M 650,80 L 550,380 L 580,550" />
-          <path d="M 150,250 L 850,250" />
-        </g>
-
-        {/* Route Line Reference */}
-        <path
-          d="M 140,468 L 260,432 L 380,384 L 500,330 L 620,264 L 740,210 L 860,132"
-          fill="none"
-          stroke="#0d9488"
-          strokeWidth="3"
-          strokeDasharray="4 3"
-          opacity="0.6"
-        />
-
-        {/* Pin if Location is Selected */}
-        {selectedLocation && (
-          <g transform={`translate(${pinX}, ${pinY})`} className="animate-in fade-in zoom-in-75 duration-200">
-            {/* Geofence 300m circle preview */}
-            <circle
-              cx="0"
-              cy="0"
-              r="45"
-              fill="#ccfbf1"
-              fillOpacity="0.4"
-              stroke="#0d9488"
-              strokeWidth="1.5"
-              strokeDasharray="4 2"
-            />
-
-            {/* Dropped Pin */}
-            <path
-              d="M 0,0 C -10,-10 -10,-24 0,-30 C 10,-24 10,-10 0,0 Z"
-              fill="#0d9488"
-              stroke="#ffffff"
-              strokeWidth="2"
-            />
-            <circle cx="0" cy="-18" r="4.5" fill="#ffffff" />
-
-            {/* Stop Label Banner */}
-            <g transform="translate(0, -36)">
-              <rect
-                x={-(selectedLocation.name.length * 3.3 + 12)}
-                y="-14"
-                width={selectedLocation.name.length * 6.6 + 24}
-                height="20"
-                rx="4"
-                fill="#ffffff"
-                stroke="#0d9488"
-                strokeWidth="1.5"
-                filter="drop-shadow(0 2px 4px rgba(0,0,0,0.1))"
-              />
-              <text
-                x="0"
-                y="0"
-                textAnchor="middle"
-                fill="#0f172a"
-                fontSize="10"
-                fontWeight="600"
-              >
-                {selectedLocation.name}
-              </text>
-            </g>
-          </g>
-        )}
-      </svg>
+      {/* Leaflet Map Div */}
+      <div ref={mapContainerRef} className="w-full h-full relative z-[1]" />
 
       {/* Selected Address Footer */}
-      <div className="absolute bottom-0 left-0 right-0 bg-white/95 border-t border-slate-200 px-3 py-2 text-xs text-slate-700 flex items-center justify-between">
+      <div className="absolute bottom-0 left-0 right-0 bg-white/95 border-t border-slate-200 px-3 py-2 text-xs text-slate-700 flex items-center justify-between z-[500]">
         <span className="truncate pr-2">
           {selectedLocation ? (
             <>
-              <strong className="text-teal-800 font-semibold">Location:</strong> {selectedLocation.address}
+              <strong className="text-teal-800 font-semibold">Selected Location:</strong> {selectedLocation.address}
             </>
           ) : (
-            <span className="text-slate-500">Search an address or click anywhere on the map to set coordinates.</span>
+            <span className="text-slate-500">Search an address or click anywhere on the street map to set stop pin.</span>
           )}
         </span>
-        <span className="text-slate-400 text-xs shrink-0">Click map to adjust pin</span>
+        <span className="text-slate-400 text-xs shrink-0">Click map to move pin</span>
       </div>
     </div>
   );
