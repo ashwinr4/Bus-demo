@@ -51,12 +51,12 @@ export const DriverLayout: React.FC = () => {
         </header>
 
         {/* Dynamic Mobile Viewport Content */}
-        <main className="flex-1 p-4 pb-24 overflow-y-auto bg-white">
+        <main className="flex-1 p-4 pb-32 overflow-y-auto bg-white">
           <Outlet />
         </main>
 
         {/* Bottom Mobile Navigation Bar (Color Treatment: Deep Navy #17324D, Active: Teal #0F766E) */}
-        <nav className="fixed bottom-0 left-0 right-0 max-w-md mx-auto bg-[#17324D] border-t border-[#12273d] py-1.5 px-3 flex items-center justify-around z-40 shadow-md">
+        <nav className="fixed bottom-0 left-0 right-0 max-w-md mx-auto bg-[#17324D] border-t border-[#12273d] py-1.5 px-3 flex items-center justify-around z-50 shadow-lg">
           <NavLink
             to="/driver"
             end
