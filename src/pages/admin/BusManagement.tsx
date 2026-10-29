@@ -255,7 +255,7 @@ export const BusManagement: React.FC = () => {
                 <input
                   type="text"
                   required
-                  placeholder="KA-01-EF-4099"
+                  placeholder="TN-07-EF-4099"
                   value={registrationNumber}
                   onChange={(e) => setRegistrationNumber(e.target.value)}
                   className="w-full p-2 border border-slate-300 rounded font-mono focus:ring-1 focus:ring-teal-700"

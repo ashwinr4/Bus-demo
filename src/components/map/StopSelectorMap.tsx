@@ -28,7 +28,7 @@ export const StopSelectorMap: React.FC<StopSelectorMapProps> = ({
     if (!mapInstanceRef.current) {
       const initialLatLng: [number, number] = selectedLocation
         ? toLatLng(selectedLocation.coordinates)
-        : [12.925, 77.65];
+        : [12.965, 80.245];
 
       const map = L.map(mapContainerRef.current, {
         center: initialLatLng,

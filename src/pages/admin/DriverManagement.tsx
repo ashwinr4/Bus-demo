@@ -44,7 +44,7 @@ export const DriverManagement: React.FC = () => {
       name,
       employeeId: employeeId || `DRV-${Math.floor(Math.random() * 900 + 100)}`,
       phone,
-      licenseNumber: licenseNumber || 'KA-01-2023-99999',
+      licenseNumber: licenseNumber || 'TN-07-2023-99999',
       assignedBusId,
       assignedRouteId: selectedBus ? selectedBus.assignedRouteId : 'route-04',
       dutyStatus: 'on_duty',
@@ -277,7 +277,7 @@ export const DriverManagement: React.FC = () => {
                 </label>
                 <input
                   type="text"
-                  placeholder="KA-04-2019-001293"
+                  placeholder="TN-07-2019-001293"
                   value={licenseNumber}
                   onChange={(e) => setLicenseNumber(e.target.value)}
                   className="w-full p-2 border border-slate-300 rounded font-mono focus:ring-1 focus:ring-teal-700"

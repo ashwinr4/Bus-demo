@@ -1,10 +1,10 @@
 import { GeoPoint } from '../types';
 
-// Deterministic baseline in South Bengaluru (HSR Layout / Sarjapur Corridor matching sample data)
-const BASE_LAT = 12.928;
-const BASE_LNG = 77.635;
+// Deterministic baseline in South Chennai (Velachery / Taramani / Perungudi / Thoraipakkam Corridor)
+const BASE_LAT = 12.985;
+const BASE_LNG = 80.215;
 const SPAN_LAT = 0.055;
-const SPAN_LNG = 0.065;
+const SPAN_LNG = 0.055;
 
 export const toLatLng = (point: GeoPoint | { x: number; y: number; lat?: number; lng?: number }): [number, number] => {
   if (typeof point.lat === 'number' && typeof point.lng === 'number' && !isNaN(point.lat) && !isNaN(point.lng)) {
@@ -25,3 +25,4 @@ export const fromLatLng = (lat: number, lng: number): GeoPoint => {
     lng: Number(lng.toFixed(6)),
   };
 };
+
