@@ -17,22 +17,22 @@ export const DriverLayout: React.FC = () => {
 
       {/* Mobile Shell Frame */}
       <div className="w-full max-w-md bg-white min-h-[calc(100vh-41px)] flex flex-col shadow-sm border-x border-slate-200">
-        {/* Mobile Top Bar (Color Treatment: Light Cool Grey #F3F6F8 & Dark Navy #17324D) */}
-        <header className="bg-[#F3F6F8] border-b border-slate-200 p-3.5 sticky top-[41px] z-30 flex items-center justify-between text-[#17324D]">
+        {/* Mobile Top Bar (Color Treatment: Deep Navy #17324D) */}
+        <header className="bg-[#17324D] border-b border-[#12273d] p-3.5 sticky top-[41px] z-30 flex items-center justify-between text-white">
           <div className="flex items-center gap-2.5">
             <div className="w-9 h-9 rounded-lg bg-[#0F766E] flex items-center justify-center text-white font-bold text-sm shadow-xs">
               <Bus className="w-5 h-5 text-white" />
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <span className="text-base font-bold text-[#17324D] tracking-tight">
+                <span className="text-base font-bold text-white tracking-tight">
                   {assignedBus.fleetNumber}
                 </span>
-                <span className="text-xs px-2 py-0.5 rounded bg-white text-[#17324D] font-mono font-medium border border-slate-200 shadow-2xs">
+                <span className="text-xs px-2 py-0.5 rounded bg-[#12273d] text-slate-200 font-mono font-medium border border-white/10 shadow-2xs">
                   {assignedBus.registrationNumber}
                 </span>
               </div>
-              <p className="text-xs text-[#17324D]/80 font-medium">{currentDriver.name} • {currentDriver.employeeId}</p>
+              <p className="text-xs text-slate-300 font-medium">{currentDriver.name} • {currentDriver.employeeId}</p>
             </div>
           </div>
 
@@ -42,10 +42,10 @@ export const DriverLayout: React.FC = () => {
               e.preventDefault();
               alert("Calling Oakridge Transport Control Desk...");
             }}
-            className="flex items-center gap-1.5 bg-rose-50 hover:bg-rose-100 border border-rose-200 text-rose-800 px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors"
+            className="flex items-center gap-1.5 bg-rose-700 hover:bg-rose-800 border border-rose-600 text-white px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors"
             title="Emergency Control Desk"
           >
-            <PhoneCall className="w-3.5 h-3.5 text-rose-700" />
+            <PhoneCall className="w-3.5 h-3.5 text-white" />
             <span>SOS Desk</span>
           </a>
         </header>
@@ -55,23 +55,27 @@ export const DriverLayout: React.FC = () => {
           <Outlet />
         </main>
 
-        {/* Bottom Mobile Navigation Bar (Color Treatment: Light Cool Grey #F3F6F8 & Dark Navy #17324D, Active: Teal #0F766E) */}
-        <nav className="fixed bottom-0 left-0 right-0 max-w-md mx-auto bg-[#F3F6F8] border-t border-slate-200 py-1.5 px-3 flex items-center justify-around z-40 shadow-md">
+        {/* Bottom Mobile Navigation Bar (Color Treatment: Deep Navy #17324D, Active: Teal #0F766E) */}
+        <nav className="fixed bottom-0 left-0 right-0 max-w-md mx-auto bg-[#17324D] border-t border-[#12273d] py-1.5 px-3 flex items-center justify-around z-40 shadow-md">
           <NavLink
             to="/driver"
             end
             className={({ isActive }) =>
               `flex flex-col items-center justify-center py-1.5 px-3 rounded-lg text-xs font-medium transition-colors flex-1 ${
                 isActive
-                  ? 'text-[#0F766E] font-bold bg-white shadow-2xs border border-slate-200/80'
-                  : 'text-[#17324D]/70 hover:text-[#17324D]'
+                  ? 'bg-[#0F766E] text-white font-bold shadow-xs'
+                  : 'text-slate-300 hover:text-white hover:bg-white/5'
               }`
             }
           >
-            <Navigation className="w-5 h-5 mb-1 text-[#0F766E]" />
-            <span>Trip Console</span>
-            {driverTripState === 'active_trip' && (
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 mt-0.5" />
+            {({ isActive }) => (
+              <>
+                <Navigation className={`w-5 h-5 mb-1 ${isActive ? 'text-white' : 'text-slate-300'}`} />
+                <span>Trip Console</span>
+                {driverTripState === 'active_trip' && (
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 mt-0.5" />
+                )}
+              </>
             )}
           </NavLink>
 
@@ -80,13 +84,17 @@ export const DriverLayout: React.FC = () => {
             className={({ isActive }) =>
               `flex flex-col items-center justify-center py-1.5 px-3 rounded-lg text-xs font-medium transition-colors flex-1 ${
                 isActive
-                  ? 'text-[#0F766E] font-bold bg-white shadow-2xs border border-slate-200/80'
-                  : 'text-[#17324D]/70 hover:text-[#17324D]'
+                  ? 'bg-[#0F766E] text-white font-bold shadow-xs'
+                  : 'text-slate-300 hover:text-white hover:bg-white/5'
               }`
             }
           >
-            <ListOrdered className="w-5 h-5 mb-1" />
-            <span>Stops</span>
+            {({ isActive }) => (
+              <>
+                <ListOrdered className={`w-5 h-5 mb-1 ${isActive ? 'text-white' : 'text-slate-300'}`} />
+                <span>Stops</span>
+              </>
+            )}
           </NavLink>
 
           <NavLink
@@ -94,13 +102,17 @@ export const DriverLayout: React.FC = () => {
             className={({ isActive }) =>
               `flex flex-col items-center justify-center py-1.5 px-3 rounded-lg text-xs font-medium transition-colors flex-1 ${
                 isActive
-                  ? 'text-[#0F766E] font-bold bg-white shadow-2xs border border-slate-200/80'
-                  : 'text-[#17324D]/70 hover:text-[#17324D]'
+                  ? 'bg-[#0F766E] text-white font-bold shadow-xs'
+                  : 'text-slate-300 hover:text-white hover:bg-white/5'
               }`
             }
           >
-            <User className="w-5 h-5 mb-1" />
-            <span>Profile</span>
+            {({ isActive }) => (
+              <>
+                <User className={`w-5 h-5 mb-1 ${isActive ? 'text-white' : 'text-slate-300'}`} />
+                <span>Profile</span>
+              </>
+            )}
           </NavLink>
         </nav>
       </div>

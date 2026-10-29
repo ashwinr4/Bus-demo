@@ -15,6 +15,7 @@ export const ParentBusDetails: React.FC = () => {
     buses,
     routes,
     parentAssignedBus,
+    parentStudent,
     setParentSelectedBusId,
   } = useTransportation();
 
@@ -124,6 +125,7 @@ export const ParentBusDetails: React.FC = () => {
         <LiveTransitMap
           bus={selectedBus}
           route={selectedRoute}
+          highlightStopId={isAssignedBus ? parentStudent.pickupStopId : undefined}
           heightClass="h-[270px]"
           interactive={true}
         />

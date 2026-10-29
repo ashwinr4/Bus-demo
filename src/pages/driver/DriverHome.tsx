@@ -206,25 +206,34 @@ export const DriverHome: React.FC = () => {
         <div className="bg-white border border-slate-200 rounded-xl p-3.5 text-xs text-slate-700 shadow-xs">
           <div className="font-bold text-slate-900 mb-2 flex items-center justify-between">
             <span>Stops Overview</span>
-            <span className="text-slate-500 font-mono text-xs">2 / 6 Departed</span>
+            <span className="text-slate-500 font-mono text-xs">
+              {assignedRoute.stops.filter((s) => s.status === 'departed').length} / {assignedRoute.stops.length} Departed
+            </span>
           </div>
           <div className="space-y-1.5 text-xs">
-            <div className="flex items-center justify-between text-slate-400 line-through">
-              <span>1. Silver Oaks Main Gate</span>
-              <span>Departed</span>
-            </div>
-            <div className="flex items-center justify-between text-slate-400 line-through">
-              <span>2. Maple Crest Apartments</span>
-              <span>Departed</span>
-            </div>
-            <div className="flex items-center justify-between text-teal-900 font-bold bg-teal-50 p-1.5 rounded border border-teal-200">
-              <span>3. Greenwood Avenue Post Office</span>
-              <span className="text-amber-800">Approaching (280m)</span>
-            </div>
-            <div className="flex items-center justify-between text-slate-600">
-              <span>4. Orchid Enclave Gate 2</span>
-              <span>Pending</span>
-            </div>
+            {assignedRoute.stops.slice(0, 4).map((st, idx) => {
+              const isApproaching = st.status === 'approaching';
+              const isDeparted = st.status === 'departed';
+              return (
+                <div
+                  key={st.id}
+                  className={`flex items-center justify-between ${
+                    isApproaching
+                      ? 'text-teal-900 font-bold bg-teal-50 p-1.5 rounded border border-teal-200'
+                      : isDeparted
+                      ? 'text-slate-400 line-through'
+                      : 'text-slate-600'
+                  }`}
+                >
+                  <span>
+                    {idx + 1}. {st.name}
+                  </span>
+                  <span className={isApproaching ? 'text-amber-800' : ''}>
+                    {isApproaching ? 'Approaching (280m)' : isDeparted ? 'Departed' : 'Pending'}
+                  </span>
+                </div>
+              );
+            })}
           </div>
         </div>
 
